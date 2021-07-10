@@ -115,5 +115,14 @@ describe('calculateDueDate', () => {
       const expected = new Date('2021-03-29T14:30:00');
       expect(result.toISOString()).toBe(expected.toISOString());
     });
+
+    it('should handle due date falling on midnight edge case', () => {
+      const testSubmitDateTime = new Date('2021-07-08T17:00:00');
+      const testTurnaroundTime = 7;
+
+      const result = calculateDueDate(testSubmitDateTime, testTurnaroundTime);
+      const expected = new Date('2021-07-09T16:00:00');
+      expect(result.toISOString()).toBe(expected.toISOString());
+    });
   });
 });
