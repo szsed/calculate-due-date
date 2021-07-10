@@ -1,12 +1,15 @@
+const START_OF_WORKDAY: number = 9;
+const END_OF_WORKDAY: number = 17;
+
 const isWithinWorkingHours = (date: Date): boolean => {
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+  const hours: number = date.getHours();
+  const minutes: number = date.getMinutes();
   return (hours >= 9 && hours < 17) || (hours === 17 && minutes === 0);
 };
 
 const isOnWeekend = (date: Date): boolean => {
-  const weekendDays = [0, 6];
-  return weekendDays.includes(date.getDay());
+  const WEEKEND_DAYS: number[] = [0, 6];
+  return WEEKEND_DAYS.includes(date.getDay());
 };
 
 const validateSubmitDateTime = (submitDateTime: Date): void => {
@@ -47,6 +50,11 @@ const calculateDueDate = (submitDateTime: Date, turnaroundTime: number): Date =>
     turnaroundTime -= 8;
   }
   dueDate.setHours(dueDate.getHours() + turnaroundTime);
+  if (!isWithinWorkingHours(dueDate)) {
+    dueDate.setDate(dueDate.getDate() + 1);
+    const hourOverEndOfWorkday = dueDate.getHours() - END_OF_WORKDAY;
+    dueDate.setHours(START_OF_WORKDAY + hourOverEndOfWorkday);
+  }
 
   return dueDate;
 };
