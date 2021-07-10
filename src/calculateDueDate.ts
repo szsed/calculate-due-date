@@ -41,7 +41,9 @@ const validateInput = (submitDateTime: Date, turnaroundTime: number): void => {
 const calculateDueDate = (submitDateTime: Date, turnaroundTime: number): Date => {
   validateInput(submitDateTime, turnaroundTime);
 
-  return new Date();
+  submitDateTime.setHours(submitDateTime.getHours() + turnaroundTime);
+
+  return submitDateTime;
 };
 
 export default calculateDueDate;
