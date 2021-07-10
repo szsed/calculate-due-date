@@ -41,12 +41,17 @@ const validateInput = (submitDateTime: Date, turnaroundTime: number): void => {
   validateTurnaroundTime(turnaroundTime);
 };
 
-const incrementDate = (date: Date): void => void date.setDate(date.getDate() + 1);
+const incrementDateWeekendAdjusted = (date: Date): void => {
+  date.setDate(date.getDate() + 1);
+  if (isOnWeekend(date)) {
+    date.setDate(date.getDate() + 2);
+  }
+};
 
 const incrementHoursWorkdayAdjusted = (date: Date, hours: number): void => {
   date.setHours(date.getHours() + hours);
   if (!isWithinWorkingHours(date)) {
-    incrementDate(date);
+    incrementDateWeekendAdjusted(date);
     const hoursOverEndOfWorkday = date.getHours() - END_OF_WORKDAY;
     date.setHours(START_OF_WORKDAY + hoursOverEndOfWorkday);
   }
@@ -57,7 +62,7 @@ const calculateDueDate = (submitDateTime: Date, turnaroundTime: number): Date =>
 
   const dueDate = new Date(submitDateTime);
   if (turnaroundTime > 8) {
-    incrementDate(dueDate);
+    incrementDateWeekendAdjusted(dueDate);
     turnaroundTime -= 8;
   }
   incrementHoursWorkdayAdjusted(dueDate, turnaroundTime);
