@@ -66,9 +66,9 @@ const incrementDateWeekendAdjusted = (date: Date): void => {
 const incrementHoursWorkdayAdjusted = (date: Date, hours: number): void => {
   date.setHours(date.getHours() + hours);
   if (!isWithinWorkingHours(date)) {
-    incrementDateWeekendAdjusted(date);
     const hoursOverEndOfWorkday = date.getHours() - END_OF_WORKDAY;
     date.setHours(START_OF_WORKDAY + hoursOverEndOfWorkday);
+    incrementDateWeekendAdjusted(date);
   }
 };
 
