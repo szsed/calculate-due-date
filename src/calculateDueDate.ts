@@ -41,6 +41,21 @@ const validateInput = (submitDateTime: Date, turnaroundTime: number): void => {
   validateTurnaroundTime(turnaroundTime);
 };
 
+const incrementWeeks = (date: Date, hours: number): number => {
+  const wholeWorkDays: number = Math.floor(hours / 8);
+  const wholeWorkWeeks: number = Math.floor(wholeWorkDays / 5);
+  const remainderWorkDays: number = wholeWorkDays % 5;
+  date.setDate(date.getDate() + wholeWorkWeeks * 7);
+  return remainderWorkDays;
+};
+
+const incrementDate = (date: Date, days: number): void => {
+  while (days) {
+    incrementDateWeekendAdjusted(date);
+    days--;
+  }
+};
+
 const incrementDateWeekendAdjusted = (date: Date): void => {
   date.setDate(date.getDate() + 1);
   if (isOnWeekend(date)) {
@@ -61,13 +76,10 @@ const calculateDueDate = (submitDateTime: Date, turnaroundTime: number): Date =>
   validateInput(submitDateTime, turnaroundTime);
 
   const dueDate: Date = new Date(submitDateTime);
-  let wholeWorkDays: number = Math.floor(turnaroundTime / 8);
-  const remainderHours: number = turnaroundTime % 8;
-  while (wholeWorkDays) {
-    incrementDateWeekendAdjusted(dueDate);
-    wholeWorkDays--;
-  }
 
+  const remainderHours: number = turnaroundTime % 8;
+  const remainderWorkDays = incrementWeeks(dueDate, turnaroundTime);
+  incrementDate(dueDate, remainderWorkDays);
   incrementHoursWorkdayAdjusted(dueDate, remainderHours);
 
   return dueDate;
