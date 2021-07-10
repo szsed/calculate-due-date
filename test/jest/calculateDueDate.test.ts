@@ -61,5 +61,14 @@ describe('calculateDueDate', () => {
       const expected = new Date('2021-07-09T14:30:00');
       expect(result.toISOString()).toBe(expected.toISOString());
     });
+
+    it('should return the correct result when the due date is on the next day within the working week', () => {
+      const testSubmitDateTime = new Date('2021-07-08T09:30:00');
+      const testTurnaroundTime = 13;
+
+      const result = calculateDueDate(testSubmitDateTime, testTurnaroundTime);
+      const expected = new Date('2021-07-09T14:30:00');
+      expect(result.toISOString()).toBe(expected.toISOString());
+    });
   });
 });
