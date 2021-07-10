@@ -44,6 +44,12 @@ describe('calculateDueDate', () => {
     it('should accept valid input', () => {
       expect(() => calculateDueDate(testSubmitDateTime, testTurnaroundTime)).not.toThrow();
     });
+
+    it('should not mutate the input date', () => {
+      const savedInputDateValue = testSubmitDateTime.toISOString();
+      const result = calculateDueDate(testSubmitDateTime, testTurnaroundTime);
+      expect(testSubmitDateTime.toISOString()).toBe(savedInputDateValue);
+    });
   });
 
   describe('algorithm correctness', () => {
