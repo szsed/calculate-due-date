@@ -45,4 +45,15 @@ describe('calculateDueDate', () => {
       expect(() => calculateDueDate(testSubmitDateTime, testTurnaroundTime)).not.toThrow();
     });
   });
+
+  describe('algorithm correctness', () => {
+    it('should return the correct result when the due date is within the working day', () => {
+      const testSubmitDateTime = new Date('2021-07-09T09:30:00');
+      const testTurnaroundTime = 5;
+
+      const result = calculateDueDate(testSubmitDateTime, testTurnaroundTime);
+      const expected = new Date('2021-07-09T14:30:00');
+      expect(result.toISOString()).toBe(expected.toISOString());
+    });
+  });
 });
