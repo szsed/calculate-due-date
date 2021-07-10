@@ -70,5 +70,14 @@ describe('calculateDueDate', () => {
       const expected = new Date('2021-07-09T14:30:00');
       expect(result.toISOString()).toBe(expected.toISOString());
     });
+
+    it('should return the correct result when the due date would fall outside working hours on the same day', () => {
+      const testSubmitDateTime = new Date('2021-07-08T14:30:00');
+      const testTurnaroundTime = 5;
+
+      const result = calculateDueDate(testSubmitDateTime, testTurnaroundTime);
+      const expected = new Date('2021-07-09T11:30:00');
+      expect(result.toISOString()).toBe(expected.toISOString());
+    });
   });
 });
