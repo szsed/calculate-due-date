@@ -42,6 +42,10 @@ const calculateDueDate = (submitDateTime: Date, turnaroundTime: number): Date =>
   validateInput(submitDateTime, turnaroundTime);
 
   const dueDate = new Date(submitDateTime);
+  if (turnaroundTime > 8) {
+    dueDate.setDate(dueDate.getDate() + 1);
+    turnaroundTime -= 8;
+  }
   dueDate.setHours(dueDate.getHours() + turnaroundTime);
 
   return dueDate;
