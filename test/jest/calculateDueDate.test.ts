@@ -88,5 +88,14 @@ describe('calculateDueDate', () => {
       const expected = new Date('2021-07-12T14:30:00');
       expect(result.toISOString()).toBe(expected.toISOString());
     });
+
+    it('should return the correct result when the due date is multiple days ahead', () => {
+      const testSubmitDateTime = new Date('2021-07-08T09:30:00');
+      const testTurnaroundTime = 26;
+
+      const result = calculateDueDate(testSubmitDateTime, testTurnaroundTime);
+      const expected = new Date('2021-07-13T11:30:00');
+      expect(result.toISOString()).toBe(expected.toISOString());
+    });
   });
 });
