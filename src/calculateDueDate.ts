@@ -41,20 +41,26 @@ const validateInput = (submitDateTime: Date, turnaroundTime: number): void => {
   validateTurnaroundTime(turnaroundTime);
 };
 
+const incrementDate = (date: Date): void => void date.setDate(date.getDate() + 1);
+
+const incrementHoursWorkdayAdjusted = (date: Date, hours: number): void => {
+  date.setHours(date.getHours() + hours);
+  if (!isWithinWorkingHours(date)) {
+    incrementDate(date);
+    const hoursOverEndOfWorkday = date.getHours() - END_OF_WORKDAY;
+    date.setHours(START_OF_WORKDAY + hoursOverEndOfWorkday);
+  }
+};
+
 const calculateDueDate = (submitDateTime: Date, turnaroundTime: number): Date => {
   validateInput(submitDateTime, turnaroundTime);
 
   const dueDate = new Date(submitDateTime);
   if (turnaroundTime > 8) {
-    dueDate.setDate(dueDate.getDate() + 1);
+    incrementDate(dueDate);
     turnaroundTime -= 8;
   }
-  dueDate.setHours(dueDate.getHours() + turnaroundTime);
-  if (!isWithinWorkingHours(dueDate)) {
-    dueDate.setDate(dueDate.getDate() + 1);
-    const hourOverEndOfWorkday = dueDate.getHours() - END_OF_WORKDAY;
-    dueDate.setHours(START_OF_WORKDAY + hourOverEndOfWorkday);
-  }
+  incrementHoursWorkdayAdjusted(dueDate, turnaroundTime);
 
   return dueDate;
 };
