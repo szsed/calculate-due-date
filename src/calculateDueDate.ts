@@ -60,12 +60,15 @@ const incrementHoursWorkdayAdjusted = (date: Date, hours: number): void => {
 const calculateDueDate = (submitDateTime: Date, turnaroundTime: number): Date => {
   validateInput(submitDateTime, turnaroundTime);
 
-  const dueDate = new Date(submitDateTime);
-  if (turnaroundTime > 8) {
+  const dueDate: Date = new Date(submitDateTime);
+  let wholeWorkDays: number = Math.floor(turnaroundTime / 8);
+  const remainderHours: number = turnaroundTime % 8;
+  while (wholeWorkDays) {
     incrementDateWeekendAdjusted(dueDate);
-    turnaroundTime -= 8;
+    wholeWorkDays--;
   }
-  incrementHoursWorkdayAdjusted(dueDate, turnaroundTime);
+
+  incrementHoursWorkdayAdjusted(dueDate, remainderHours);
 
   return dueDate;
 };
