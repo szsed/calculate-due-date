@@ -106,5 +106,14 @@ describe('calculateDueDate', () => {
       const expected = new Date('2021-07-27T11:30:00');
       expect(result.toISOString()).toBe(expected.toISOString());
     });
+
+    it('should handle daylight saving time adjustments', () => {
+      const testSubmitDateTime = new Date('2021-03-26T09:30:00');
+      const testTurnaroundTime = 13;
+
+      const result = calculateDueDate(testSubmitDateTime, testTurnaroundTime);
+      const expected = new Date('2021-03-29T14:30:00');
+      expect(result.toISOString()).toBe(expected.toISOString());
+    });
   });
 });
